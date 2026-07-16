@@ -96,11 +96,11 @@
     "decompress": "^4.2.1",
     "internal-ip": "^8.0.0",
     "rollup": "^4.60.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.2.1",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.bb0445bf5599a389c324442a3f3f8a8a5db5d83d",
     "vite-plugin-static-copy": "^3.3.0",
     "vite-plugin-svgr": "^4.5.0",
     "vite-plugin-top-level-await": "^1.5.0",
     "vite-plugin-wasm": "^3.5.0",
-    "vite-plus": "^0.2.1"
+    "vite-plus": "0.0.0-commit.bb0445bf5599a389c324442a3f3f8a8a5db5d83d"
   }
 }
