@@ -10,8 +10,7 @@ const REVIEWER_LOGIN = "gschier";
 const LARGE_DIFF_CHANGED_FILES = 20;
 const LARGE_DIFF_CHANGED_LINES = 800;
 const SUMMARY_TITLE_MAX_LENGTH = 80;
-const AUTOMATIC_PR_CREATED_AFTER = "2026-06-30T07:00:00.000Z";
-const AUTOMATIC_PR_CREATED_AFTER_LABEL = "June 30, 2026";
+const MIN_AUTOMATIC_PR_NUMBER = 494;
 
 const LABELS = {
   inScope: {
@@ -54,16 +53,25 @@ const MANAGED_LABEL_NAMES = [
   ...new Set(Object.values(LABELS).map((label) => label.name)),
 ];
 
+// Each checkbox lists its current label first, followed by legacy labels still
+// accepted from PRs opened against older versions of the template.
 const CHECKBOXES = {
-  bugFix: "This PR is a bug fix.",
-  explicitPermission:
+  bugFix: ["This PR is a bug fix."],
+  explicitPermission: [
     "If this PR is not a bug fix, I linked the feedback item where @gschier explicitly gave me permission to work on it.",
-  readContributing:
+  ],
+  readContributing: [
     "I have read and followed [`CONTRIBUTING.md`](CONTRIBUTING.md).",
-  testedLocally: "I tested this change locally.",
-  testsUpdated: "I added or updated tests when reasonable.",
-  screenshotsAdded:
+  ],
+  testedLocally: ["I tested this change locally."],
+  testsUpdated: [
+    "I added or updated tests, or tests are not reasonable for this change.",
+    "I added or updated tests when reasonable.",
+  ],
+  screenshotsAdded: [
+    "I added screenshots or recordings, or this change does not affect the UI.",
     "I added screenshots or recordings for UI changes when reasonable.",
+  ],
 };
 
 function escapeRegExp(value) {
@@ -103,8 +111,8 @@ function normalizeCheckboxLabel(label) {
     .trim();
 }
 
-function checkboxState(body, label) {
-  const expectedLabel = normalizeCheckboxLabel(label);
+function checkboxState(body, labels) {
+  const expectedLabels = new Set(labels.map(normalizeCheckboxLabel));
 
   for (const line of body.split("\n")) {
     const match = line.match(/^\s*[-*]\s*\[([ xX])\]\s*(.*?)\s*$/i);
@@ -113,7 +121,7 @@ function checkboxState(body, label) {
       continue;
     }
 
-    if (normalizeCheckboxLabel(match[2]) === expectedLabel) {
+    if (expectedLabels.has(normalizeCheckboxLabel(match[2]))) {
       return match[1].toLowerCase() === "x";
     }
   }
@@ -186,6 +194,18 @@ function analyzePullRequest(pr) {
     };
   }
 
+  if (labelNames.has(LABELS.explicitPermission.name)) {
+    return {
+      blockers: [],
+      changedFiles,
+      desiredLabels: [LABELS.explicitPermission.name],
+      largeDiff,
+      status: "in_scope",
+      templateUsed,
+      totalChangedLines,
+    };
+  }
+
   if (!templateUsed) {
     blockers.push({
       label: LABELS.missingTemplate.name,
@@ -244,7 +264,8 @@ function analyzePullRequest(pr) {
     if (states.testsUpdated !== true) {
       blockers.push({
         label: LABELS.policyUnmet.name,
-        message: "Confirm that tests were added or updated when reasonable.",
+        message:
+          "Confirm that tests were added or updated, or that tests are not reasonable for this change. Check the box either way.",
       });
     }
 
@@ -252,7 +273,7 @@ function analyzePullRequest(pr) {
       blockers.push({
         label: LABELS.policyUnmet.name,
         message:
-          "Confirm that screenshots or recordings were added for UI changes when reasonable.",
+          "Confirm that screenshots or recordings were added, or that this change does not affect the UI. Check the box either way.",
       });
     }
   }
@@ -428,10 +449,6 @@ function summarizeResult({ pr, analysis, skipped, skipReason }) {
   };
 }
 
-function wasCreatedBefore(value, cutoff) {
-  return Date.parse(value) < Date.parse(cutoff);
-}
-
 async function isOfficialMaintainer({ github, owner, repo, pr }) {
   if (MAINTAINER_LOGINS.has(pr.user.login)) {
     return true;
@@ -603,7 +620,7 @@ async function checkPullRequest({
   repo,
   pullNumber,
   dryRun,
-  skipCreatedBefore,
+  minimumAutomaticPullNumber,
 }) {
   const response = await github.rest.pulls.get({
     owner,
@@ -613,12 +630,9 @@ async function checkPullRequest({
   const pr = response.data;
   const issueNumber = pr.number;
 
-  if (
-    skipCreatedBefore != null &&
-    wasCreatedBefore(pr.created_at, skipCreatedBefore)
-  ) {
+  if (pr.user.type === "Bot") {
     core.notice(
-      `Skipping contribution policy for PR #${pr.number} because it was created before ${AUTOMATIC_PR_CREATED_AFTER_LABEL}.`,
+      `Skipping contribution policy for bot PR #${pr.number} from @${pr.user.login}.`,
     );
     return {
       blocked: false,
@@ -626,7 +640,26 @@ async function checkPullRequest({
       summary: summarizeResult({
         pr,
         skipped: true,
-        skipReason: `created before ${AUTOMATIC_PR_CREATED_AFTER_LABEL}`,
+        skipReason: `bot @${pr.user.login}`,
+      }),
+      skipped: true,
+    };
+  }
+
+  if (
+    minimumAutomaticPullNumber != null &&
+    pr.number < minimumAutomaticPullNumber
+  ) {
+    core.notice(
+      `Skipping contribution policy for PR #${pr.number} because automatic checks start at PR #${minimumAutomaticPullNumber}.`,
+    );
+    return {
+      blocked: false,
+      number: pr.number,
+      summary: summarizeResult({
+        pr,
+        skipped: true,
+        skipReason: `before automatic rollout PR #${minimumAutomaticPullNumber}`,
       }),
       skipped: true,
     };
@@ -756,8 +789,8 @@ async function run({ github, context, core }) {
     context.eventName === "workflow_dispatch" &&
     dryRunInput !== false &&
     dryRunInput !== "false";
-  const skipCreatedBefore =
-    payloadPr == null ? null : AUTOMATIC_PR_CREATED_AFTER;
+  const minimumAutomaticPullNumber =
+    payloadPr == null ? null : MIN_AUTOMATIC_PR_NUMBER;
   let pullNumbers;
 
   if (payloadPr != null) {
@@ -795,7 +828,7 @@ async function run({ github, context, core }) {
         repo,
         pullNumber: pr.number,
         dryRun,
-        skipCreatedBefore,
+        minimumAutomaticPullNumber,
       }),
     );
   }

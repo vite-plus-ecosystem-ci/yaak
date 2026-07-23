@@ -20,6 +20,7 @@ import { deepEqualAtom } from "../lib/atoms";
 import { languageFromContentType } from "../lib/contentType";
 import { generateId } from "../lib/generateId";
 import { extractPathPlaceholders } from "../lib/pathPlaceholders";
+import { convertRequestBody } from "../lib/requestBodyConversion";
 import {
   BODY_TYPE_BINARY,
   BODY_TYPE_FORM_MULTIPART,
@@ -38,6 +39,7 @@ import { BinaryFileEditor } from "./BinaryFileEditor";
 import { ConfirmLargeRequestBody } from "./ConfirmLargeRequestBody";
 import { CountBadge } from "./core/CountBadge";
 import type { GenericCompletionConfig } from "./core/Editor/genericCompletion";
+import { getUrlCompletionConfig } from "./core/Editor/url/completion";
 import { Editor } from "./core/Editor/LazyEditor";
 import { InlineCode } from "@yaakapp-internal/ui";
 import type { Pair } from "./core/PairEditor";
@@ -195,7 +197,14 @@ export function HttpRequestPane({ style, fullHeight, className, activeRequest }:
               });
             };
 
-            const patch: Partial<HttpRequest> = { bodyType };
+            const patch: Partial<HttpRequest> = {
+              bodyType,
+              body: convertRequestBody({
+                body: activeRequest.body,
+                fromBodyType: activeRequest.bodyType,
+                toBodyType: bodyType,
+              }),
+            };
             let newContentType: string | null | undefined;
             if (bodyType === BODY_TYPE_NONE) {
               newContentType = null;
@@ -277,16 +286,7 @@ export function HttpRequestPane({ style, fullHeight, className, activeRequest }:
   const autocompleteUrls = useAtomValue(memoNotActiveRequestUrlsAtom);
 
   const autocomplete: GenericCompletionConfig = useMemo(
-    () => ({
-      minMatch: 3,
-      options:
-        autocompleteUrls.length > 0
-          ? autocompleteUrls
-          : [
-              { label: "http://", type: "constant" },
-              { label: "https://", type: "constant" },
-            ],
-    }),
+    () => getUrlCompletionConfig(autocompleteUrls),
     [autocompleteUrls],
   );
 

@@ -30,13 +30,14 @@ permissions:
 
 jobs:
   check:
+    if: github.repository == 'mountain-loop/yaak'
     name: Check contribution policy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout policy script
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.base.sha || github.ref }}
+          ref: main
           fetch-depth: 1
 
       - name: Check contribution policy
