@@ -1,0 +1,25 @@
+apps/yaak-client/package.json
+  s_1740f4893f0bf6::t_ecef35b9ad0f3e 99,104
+apps/yaak-proxy/package.json
+  s_1740f4893f0bf6::t_dbc3103155d90b 34-35
+package-lock.json
+  s_1740f4893f0bf6::t_a0c36c91bee1ba 94-95,190,195,240-241,389-398,433-442,2578-2584,3218-3236,4922-4924,5288-5290,5305-5307,5322-5324,5342-5344,5362-5364,5382-5384,5402-5404,5419-5421,6496-6498,7273-7290,7699-7718,8320-8322,8324-8327,13151-13154,13158,13161,13304-13306,13310,14362-14364,14368,16022-16024,16245-16247,16262,16278-16285
+package.json
+  s_1740f4893f0bf6::t_4bd18a7c748223 127-128,133
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "8cbe05f82953950eb1c8d6097c7b1566bcefa7f8",
+  "prompts": {},
+  "sessions": {
+    "s_1740f4893f0bf6": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0734049fbffekQIlKU9BxVrge9",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "wan9chi <dk4rest@gmail.com>"
+    }
+  }
+}
