@@ -124,13 +124,14 @@
     "postcss": "^8.5.25",
     "tailwindcss": "^4.3.2",
     "typescript": "^5.8.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.2.1",
-    "vite-plus": "^0.2.1",
-    "vitest": "^4.1.9"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.8b23a00f98df4a9270ac87a4f80b2ce1b669040b",
+    "vite-plus": "0.0.0-commit.8b23a00f98df4a9270ac87a4f80b2ce1b669040b",
+    "vitest": "4.1.10"
   },
   "overrides": {
     "js-yaml": "^4.1.1",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.2.1"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.8b23a00f98df4a9270ac87a4f80b2ce1b669040b",
+    "vitest": "4.1.10"
   },
   "packageManager": "npm@11.11.1"
 }
