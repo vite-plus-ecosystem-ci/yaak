@@ -502,7 +502,11 @@ function importCommand(parseEntries: string[], workspaceId: string) {
     if (graphqlBody != null) {
       bodyType = "graphql";
       body = graphqlBody;
-    } else if (mimeType === "application/json" || mimeType === "text/xml" || mimeType === "text/plain") {
+    } else if (
+      mimeType === "application/json" ||
+      mimeType === "text/xml" ||
+      mimeType === "text/plain"
+    ) {
       bodyType = mimeType;
       body = { text };
     } else {
