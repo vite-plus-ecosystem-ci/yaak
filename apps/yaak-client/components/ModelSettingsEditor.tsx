@@ -38,29 +38,11 @@ interface Props {
   model: ModelWithSettings;
 }
 
-type ModelWithSettings =
-  | Workspace
-  | Folder
-  | HttpRequest
-  | WebsocketRequest
-  | GrpcRequest;
+type ModelWithSettings = Workspace | Folder | HttpRequest | WebsocketRequest | GrpcRequest;
 type ModelWithHttpSettings = Workspace | Folder | HttpRequest;
-type ModelWithTlsSettings =
-  | Workspace
-  | Folder
-  | HttpRequest
-  | WebsocketRequest
-  | GrpcRequest;
-type ModelWithCookieSettings =
-  | Workspace
-  | Folder
-  | HttpRequest
-  | WebsocketRequest;
-type ModelWithMessageSizeSettings =
-  | Workspace
-  | Folder
-  | WebsocketRequest
-  | GrpcRequest;
+type ModelWithTlsSettings = Workspace | Folder | HttpRequest | WebsocketRequest | GrpcRequest;
+type ModelWithCookieSettings = Workspace | Folder | HttpRequest | WebsocketRequest;
+type ModelWithMessageSizeSettings = Workspace | Folder | WebsocketRequest | GrpcRequest;
 type BooleanSetting = boolean | InheritedBoolSetting;
 type IntegerSetting = number | InheritedIntSetting;
 type CookieSettingsPatch = {
@@ -78,10 +60,7 @@ type MessageSizeSettingsPatch = {
   settingRequestMessageSize?: ModelWithMessageSizeSettings["settingRequestMessageSize"];
 };
 
-export function ModelSettingsEditor({
-  model,
-  showSectionTitles = false,
-}: Props) {
+export function ModelSettingsEditor({ model, showSectionTitles = false }: Props) {
   const ancestors = useModelAncestors(model);
   const supportsHttpSettings = modelSupportsHttpSettings(model);
   const supportsCookieSettings = modelSupportsCookieSettings(model);
@@ -157,9 +136,7 @@ export function ModelSettingsEditor({
         </SettingsSection>
       )}
       {supportsCookieSettings && (
-        <SettingsSection
-          title={supportsTlsSettings || showSectionTitles ? "Cookies" : null}
-        >
+        <SettingsSection title={supportsTlsSettings || showSectionTitles ? "Cookies" : null}>
           <BooleanSettingRow
             settingDefinition={SETTING_SEND_COOKIES}
             setting={model.settingSendCookies}
@@ -211,15 +188,11 @@ export function countOverriddenSettings(model: ModelWithSettings) {
     settings.push(model.settingRequestMessageSize);
   }
 
-  return settings.filter(
-    (setting) => isInheritedSetting(setting) && setting.enabled === true,
-  ).length;
+  return settings.filter((setting) => isInheritedSetting(setting) && setting.enabled === true)
+    .length;
 }
 
-function patchCookieSettings(
-  model: ModelWithCookieSettings,
-  patch: Partial<CookieSettingsPatch>,
-) {
+function patchCookieSettings(model: ModelWithCookieSettings, patch: Partial<CookieSettingsPatch>) {
   switch (model.model) {
     case "workspace":
       return patchModel(model, patch as Partial<Workspace>);
@@ -232,10 +205,7 @@ function patchCookieSettings(
   }
 }
 
-function patchHttpSettings(
-  model: ModelWithHttpSettings,
-  patch: Partial<HttpSettingsPatch>,
-) {
+function patchHttpSettings(model: ModelWithHttpSettings, patch: Partial<HttpSettingsPatch>) {
   switch (model.model) {
     case "workspace":
       return patchModel(model, patch as Partial<Workspace>);
@@ -246,10 +216,7 @@ function patchHttpSettings(
   }
 }
 
-function patchTlsSettings(
-  model: ModelWithTlsSettings,
-  patch: Partial<TlsSettingsPatch>,
-) {
+function patchTlsSettings(model: ModelWithTlsSettings, patch: Partial<TlsSettingsPatch>) {
   switch (model.model) {
     case "workspace":
       return patchModel(model, patch as Partial<Workspace>);
@@ -280,21 +247,15 @@ function patchMessageSizeSettings(
   }
 }
 
-function modelSupportsHttpSettings(
-  model: ModelWithSettings,
-): model is ModelWithHttpSettings {
+function modelSupportsHttpSettings(model: ModelWithSettings): model is ModelWithHttpSettings {
   return modelSupportsSetting(model, SETTING_REQUEST_TIMEOUT);
 }
 
-function modelSupportsCookieSettings(
-  model: ModelWithSettings,
-): model is ModelWithCookieSettings {
+function modelSupportsCookieSettings(model: ModelWithSettings): model is ModelWithCookieSettings {
   return modelSupportsSetting(model, SETTING_SEND_COOKIES);
 }
 
-function modelSupportsTlsSettings(
-  model: ModelWithSettings,
-): model is ModelWithTlsSettings {
+function modelSupportsTlsSettings(model: ModelWithSettings): model is ModelWithTlsSettings {
   return modelSupportsSetting(model, SETTING_VALIDATE_CERTIFICATES);
 }
 
@@ -317,11 +278,7 @@ function BooleanSettingRow({
 }) {
   const inherited = isInheritedSetting(setting);
   const overridden = inherited ? setting.enabled === true : false;
-  const value = inherited
-    ? overridden
-      ? setting.value
-      : inheritedValue
-    : setting;
+  const value = inherited ? (overridden ? setting.value : inheritedValue) : setting;
 
   if (!inherited) {
     return (
@@ -365,18 +322,11 @@ function IntegerSettingRow({
 }) {
   const inherited = isInheritedSetting(setting);
   const overridden = inherited ? setting.enabled === true : false;
-  const value = inherited
-    ? overridden
-      ? setting.value
-      : inheritedValue
-    : setting;
+  const value = inherited ? (overridden ? setting.value : inheritedValue) : setting;
 
   if (!inherited) {
     return (
-      <SettingRow
-        title={settingDefinition.title}
-        description={settingDefinition.description}
-      >
+      <SettingRow title={settingDefinition.title} description={settingDefinition.description}>
         <NumberUnitInput
           name={settingDefinition.modelKey}
           label={settingDefinition.title}
@@ -429,20 +379,13 @@ function MessageSizeSettingRow({
 }) {
   const inherited = isInheritedSetting(setting);
   const overridden = inherited ? setting.enabled === true : false;
-  const value = inherited
-    ? overridden
-      ? setting.value
-      : inheritedValue
-    : setting;
+  const value = inherited ? (overridden ? setting.value : inheritedValue) : setting;
   const displayValue = formatMegabytes(value);
   const placeholder = "0";
 
   if (!inherited) {
     return (
-      <SettingRow
-        title={settingDefinition.title}
-        description={settingDefinition.description}
-      >
+      <SettingRow title={settingDefinition.title} description={settingDefinition.description}>
         <MessageSizeInput
           name={settingDefinition.modelKey}
           label={settingDefinition.title}
@@ -603,9 +546,7 @@ type BooleanWorkspaceSettingKey = Exclude<
 
 function formatMegabytes(bytes: number) {
   const megabytes = bytes / BYTES_PER_MB;
-  return Number.isInteger(megabytes)
-    ? `${megabytes}`
-    : megabytes.toFixed(3).replace(/\.?0+$/, "");
+  return Number.isInteger(megabytes) ? `${megabytes}` : megabytes.toFixed(3).replace(/\.?0+$/, "");
 }
 
 function parseMegabytes(value: string) {
@@ -626,9 +567,5 @@ function isValidInteger(value: string) {
 function isValidMegabytes(value: string) {
   if (value === "") return true;
   const megabytes = Number(value);
-  return (
-    Number.isFinite(megabytes) &&
-    megabytes >= 0 &&
-    megabytes <= MAX_MESSAGE_SIZE_MB
-  );
+  return Number.isFinite(megabytes) && megabytes >= 0 && megabytes <= MAX_MESSAGE_SIZE_MB;
 }

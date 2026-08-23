@@ -56,7 +56,9 @@ execSync("wasm-pack build --target bundler", {
   env: {
     ...process.env,
     CC_wasm32_unknown_unknown: clang,
-    AR_wasm32_unknown_unknown: fs.existsSync(ar) ? ar : (process.env.AR_wasm32_unknown_unknown ?? ""),
+    AR_wasm32_unknown_unknown: fs.existsSync(ar)
+      ? ar
+      : (process.env.AR_wasm32_unknown_unknown ?? ""),
     RUSTFLAGS: `--remap-path-prefix=${cargoHome}=/cargo --remap-path-prefix=${sysroot}=/rustc`,
   },
 });

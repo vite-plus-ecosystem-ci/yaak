@@ -17,11 +17,31 @@ export const rust_sqlite_wasm_malloc: (a: number) => number;
 export const rust_sqlite_wasm_realloc: (a: number, b: number) => number;
 export const sqlite3_os_end: () => number;
 export const sqlite3_os_init: () => number;
-export const wasm_bindgen__convert__closures_____invoke__ha1c2fa93df0107f3: (a: number, b: number, c: any) => [number, number];
-export const wasm_bindgen__convert__closures_____invoke__h4381d8e749fe46cf: (a: number, b: number, c: any) => [number, number];
-export const wasm_bindgen__convert__closures_____invoke__h2cf3f4cce3b29948: (a: number, b: number, c: any, d: any) => void;
-export const wasm_bindgen__convert__closures_____invoke__ha7903b6e296dd8f4: (a: number, b: number, c: any) => void;
-export const wasm_bindgen__convert__closures_____invoke__ha1b480b83daa641f: (a: number, b: number) => void;
+export const wasm_bindgen__convert__closures_____invoke__ha1c2fa93df0107f3: (
+  a: number,
+  b: number,
+  c: any,
+) => [number, number];
+export const wasm_bindgen__convert__closures_____invoke__h4381d8e749fe46cf: (
+  a: number,
+  b: number,
+  c: any,
+) => [number, number];
+export const wasm_bindgen__convert__closures_____invoke__h2cf3f4cce3b29948: (
+  a: number,
+  b: number,
+  c: any,
+  d: any,
+) => void;
+export const wasm_bindgen__convert__closures_____invoke__ha7903b6e296dd8f4: (
+  a: number,
+  b: number,
+  c: any,
+) => void;
+export const wasm_bindgen__convert__closures_____invoke__ha1b480b83daa641f: (
+  a: number,
+  b: number,
+) => void;
 export const __wbindgen_malloc: (a: number, b: number) => number;
 export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
 export const __wbindgen_exn_store: (a: number) => void;
