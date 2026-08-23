@@ -1376,9 +1376,7 @@ describe("importer-openapi", () => {
                   "application/json": {
                     schema: {
                       type: "object",
-                      allOf: [
-                        { type: "object", properties: { fromAllOf: { example: "a" } } },
-                      ],
+                      allOf: [{ type: "object", properties: { fromAllOf: { example: "a" } } }],
                       properties: { sibling: { example: "b" } },
                     },
                   },
@@ -1398,7 +1396,17 @@ describe("importer-openapi", () => {
 
   test("Accepts unquoted YAML version numbers", async () => {
     const imported = await convertOpenApi(
-      ["swagger: 2.0", "info:", "  title: Unquoted Test", '  version: "1"', "host: example.com", "paths:", "  /a:", "    get:", "      responses: {}"].join("\n"),
+      [
+        "swagger: 2.0",
+        "info:",
+        "  title: Unquoted Test",
+        '  version: "1"',
+        "host: example.com",
+        "paths:",
+        "  /a:",
+        "    get:",
+        "      responses: {}",
+      ].join("\n"),
     );
 
     expect(imported?.resources.httpRequests[0]?.url).toBe("${[baseUrl]}/a");

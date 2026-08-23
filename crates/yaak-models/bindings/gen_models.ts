@@ -475,7 +475,14 @@ export type WebsocketEvent = {
 };
 
 export type WebsocketEventType =
-  "binary" | "close" | "error" | "frame" | "open" | "ping" | "pong" | "text";
+  | "binary"
+  | "close"
+  | "error"
+  | "frame"
+  | "open"
+  | "ping"
+  | "pong"
+  | "text";
 
 export type WebsocketMessageType = "text" | "binary";
 

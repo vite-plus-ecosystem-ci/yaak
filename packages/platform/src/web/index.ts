@@ -182,10 +182,18 @@ export function createWebPlatform(): Platform {
     clipboard: {
       writeText: (text) => navigator.clipboard.writeText(text),
       readText: async () => {
-        throw unsupported("clipboard.readText", "Paste instead — Yaak in a browser can't read the clipboard on its own", "clipboardRead");
+        throw unsupported(
+          "clipboard.readText",
+          "Paste instead — Yaak in a browser can't read the clipboard on its own",
+          "clipboardRead",
+        );
       },
       clear: async () => {
-        throw unsupported("clipboard.clear", "Yaak in a browser can't modify the clipboard", "clipboardRead");
+        throw unsupported(
+          "clipboard.clear",
+          "Yaak in a browser can't modify the clipboard",
+          "clipboardRead",
+        );
       },
     },
 
@@ -198,7 +206,11 @@ export function createWebPlatform(): Platform {
 
     files: {
       readDir: async () => {
-        throw unsupported("files.readDir", "A browser tab can't browse your filesystem", "localFiles");
+        throw unsupported(
+          "files.readDir",
+          "A browser tab can't browse your filesystem",
+          "localFiles",
+        );
       },
       readText: async () => {
         throw unsupported("files.readText", "A browser tab can't read local files", "localFiles");
@@ -266,7 +278,11 @@ export function createWebPlatform(): Platform {
     },
 
     revealItemInDir: async () => {
-      throw unsupported("revealItemInDir", "A browser tab can't open your file manager", "localFiles");
+      throw unsupported(
+        "revealItemInDir",
+        "A browser tab can't open your file manager",
+        "localFiles",
+      );
     },
 
     osType: detectOsType,

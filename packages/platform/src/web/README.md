@@ -30,17 +30,17 @@ tab (index.ts, commands.ts) ──MessagePort──▶ worker.ts ──▶ @yaak
                      ◀── NDJSON: events, response, body, cookies ──
 ```
 
-| File | What it is |
-| --- | --- |
-| `index.ts` | The `Platform` implementation. |
-| `commands.ts` | The command table: model commands forward to the worker; the rest is fixed answers and refusals-with-a-reason. |
-| `connection.ts` | A tab's end of the wire: request/response over a `MessagePort`, event delivery, and the tab's identity (`label`). |
-| `send.ts` | Sending: the worker renders (`prepare_http_send`), the server executes, this file stores what comes back where the desktop stores it. |
-| `server.ts` | Where the Yaak server is, and the wire shapes it speaks (generated from `crates-server/yaak-web/src/wire.rs`). |
-| `worker.ts` | The process that owns the database. Loads the wasm, opens the DB once, answers each port, fans `model_writes` out to every port. |
-| `protocol.ts` | The message shapes both sides import. |
-| `errors.ts` | `UnsupportedCommandError`, the structured refusal. |
-| `storage.ts` | `navigator.storage.persist()`. |
+| File            | What it is                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `index.ts`      | The `Platform` implementation.                                                                                                        |
+| `commands.ts`   | The command table: model commands forward to the worker; the rest is fixed answers and refusals-with-a-reason.                        |
+| `connection.ts` | A tab's end of the wire: request/response over a `MessagePort`, event delivery, and the tab's identity (`label`).                     |
+| `send.ts`       | Sending: the worker renders (`prepare_http_send`), the server executes, this file stores what comes back where the desktop stores it. |
+| `server.ts`     | Where the Yaak server is, and the wire shapes it speaks (generated from `crates-server/yaak-web/src/wire.rs`).                        |
+| `worker.ts`     | The process that owns the database. Loads the wasm, opens the DB once, answers each port, fans `model_writes` out to every port.      |
+| `protocol.ts`   | The message shapes both sides import.                                                                                                 |
+| `errors.ts`     | `UnsupportedCommandError`, the structured refusal.                                                                                    |
+| `storage.ts`    | `navigator.storage.persist()`.                                                                                                        |
 
 The Rust side is `crates/yaak-wasm` (`@yaakapp-internal/wasm`): `boot()`,
 `rpc(cmd, payload, label)` returning `{ result, events }`, blob get/put, and
@@ -70,7 +70,7 @@ Behaviours worth knowing before changing anything:
   store's echo handling is unchanged.
 - **Cascade rules, duplicate naming, id generation, serde defaults, and the
   lazy first-run bootstrap are all the Rust code's.** Nothing about what a
-  model *is* is decided in TypeScript.
+  model _is_ is decided in TypeScript.
 - **Persistence is `relaxed-idb`**: SQLite pages live in IndexedDB, writes land
   in memory and flush shortly after. A tab closing mid-flush loses at most the
   last few writes.
@@ -82,14 +82,14 @@ Behaviours worth knowing before changing anything:
 
 ### Implemented (32)
 
-| Group | Commands |
-| --- | --- |
-| Models | `models_workspace_models`, `models_upsert`, `models_delete`, `models_duplicate`, `models_get_settings`, `models_get_graphql_introspection`, `models_upsert_graphql_introspection`, `models_grpc_events`, `models_websocket_events` |
-| Sending | `cmd_send_http_request` (through the Yaak server; see below) |
-| App | `cmd_metadata`, `cmd_get_workspace_meta`, `cmd_default_headers`, `cmd_get_themes`, `cmd_check_for_updates`, `cmd_dismiss_notification`, `cmd_plugin_init_errors` |
-| Bodies | `cmd_http_response_body`, `cmd_http_response_body_path`, `cmd_http_request_body`, `cmd_get_http_response_events`, `cmd_get_sse_events` |
+| Group                           | Commands                                                                                                                                                                                                                                                 |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Models                          | `models_workspace_models`, `models_upsert`, `models_delete`, `models_duplicate`, `models_get_settings`, `models_get_graphql_introspection`, `models_upsert_graphql_introspection`, `models_grpc_events`, `models_websocket_events`                       |
+| Sending                         | `cmd_send_http_request` (through the Yaak server; see below)                                                                                                                                                                                             |
+| App                             | `cmd_metadata`, `cmd_get_workspace_meta`, `cmd_default_headers`, `cmd_get_themes`, `cmd_check_for_updates`, `cmd_dismiss_notification`, `cmd_plugin_init_errors`                                                                                         |
+| Bodies                          | `cmd_http_response_body`, `cmd_http_response_body_path`, `cmd_http_request_body`, `cmd_get_http_response_events`, `cmd_get_sse_events`                                                                                                                   |
 | Plugin surfaces (empty results) | `cmd_http_request_actions`, `cmd_websocket_request_actions`, `cmd_grpc_request_actions`, `cmd_workspace_actions`, `cmd_folder_actions`, `cmd_template_function_summaries`, `cmd_get_http_authentication_summaries`, `cmd_get_http_authentication_config` |
-| Text | `cmd_format_json`, `cmd_render_template` |
+| Text                            | `cmd_format_json`, `cmd_render_template`                                                                                                                                                                                                                 |
 
 Some of these answer honestly rather than fully, and the difference matters:
 
@@ -112,15 +112,15 @@ Each returns an `UnsupportedCommandError` carrying `cmd`, a user-facing
 `message`, and the `capability` a caller should have checked. The UI turns it
 into a toast.
 
-| Reason | Commands |
-| --- | --- |
-| Sending, the parts not wired yet | `cmd_send_ephemeral_request`, `cmd_delete_send_history`, `cmd_delete_all_http_responses`, `cmd_import_url` |
-| No plugin runtime | `cmd_reload_plugins`, `cmd_plugin_info`, `cmd_plugins_search`, `cmd_plugins_install`, `cmd_plugins_install_from_directory`, `cmd_plugins_uninstall`, `cmd_plugins_updates`, `cmd_plugins_update_all`, `cmd_template_function_config`, `cmd_template_tokens_to_string`, `cmd_call_http_request_action`, `cmd_call_websocket_request_action`, `cmd_call_grpc_request_action`, `cmd_call_workspace_action`, `cmd_call_folder_action`, `cmd_call_http_authentication_action`, `cmd_curl_to_request`, `cmd_format_graphql` |
-| No filesystem | `cmd_import_data`, `cmd_export_data`, `cmd_save_response`, `cmd_save_base64_to_binary` |
-| Needs a real socket | `cmd_grpc_reflect`, `cmd_grpc_go`, `cmd_delete_all_grpc_connections`, `cmd_ws_connect`, `cmd_ws_send`, `cmd_ws_close`, `cmd_ws_delete_connections` |
-| Workspace encryption | `cmd_enable_encryption`, `cmd_disable_encryption`, `cmd_reveal_workspace_key`, `cmd_set_workspace_key`, `cmd_secure_template`, `cmd_decrypt_template` |
-| One tab, no windows | `cmd_new_child_window`, `cmd_new_main_window`, `cmd_restart` |
-| Other | `cmd_send_feedback` |
+| Reason                           | Commands                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sending, the parts not wired yet | `cmd_send_ephemeral_request`, `cmd_delete_send_history`, `cmd_delete_all_http_responses`, `cmd_import_url`                                                                                                                                                                                                                                                                                                                                                                                                            |
+| No plugin runtime                | `cmd_reload_plugins`, `cmd_plugin_info`, `cmd_plugins_search`, `cmd_plugins_install`, `cmd_plugins_install_from_directory`, `cmd_plugins_uninstall`, `cmd_plugins_updates`, `cmd_plugins_update_all`, `cmd_template_function_config`, `cmd_template_tokens_to_string`, `cmd_call_http_request_action`, `cmd_call_websocket_request_action`, `cmd_call_grpc_request_action`, `cmd_call_workspace_action`, `cmd_call_folder_action`, `cmd_call_http_authentication_action`, `cmd_curl_to_request`, `cmd_format_graphql` |
+| No filesystem                    | `cmd_import_data`, `cmd_export_data`, `cmd_save_response`, `cmd_save_base64_to_binary`                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Needs a real socket              | `cmd_grpc_reflect`, `cmd_grpc_go`, `cmd_delete_all_grpc_connections`, `cmd_ws_connect`, `cmd_ws_send`, `cmd_ws_close`, `cmd_ws_delete_connections`                                                                                                                                                                                                                                                                                                                                                                    |
+| Workspace encryption             | `cmd_enable_encryption`, `cmd_disable_encryption`, `cmd_reveal_workspace_key`, `cmd_set_workspace_key`, `cmd_secure_template`, `cmd_decrypt_template`                                                                                                                                                                                                                                                                                                                                                                 |
+| One tab, no windows              | `cmd_new_child_window`, `cmd_new_main_window`, `cmd_restart`                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Other                            | `cmd_send_feedback`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ### Refused generically (34)
 
@@ -136,14 +136,14 @@ should be able to see which.
 
 Reported honestly, so callers gate on the question rather than on the host:
 
-| True | False |
-| --- | --- |
+| True                                   | False                                                                                                                                                                                         |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `httpSending`, `timeline`, `cookieJar` | `grpc`, `websocket`, `git`, `sync`, `tlsOptions`, `localFiles`, `multiWindow`, `windowChrome`, `interfaceZoom`, `plugins`, `encryption`, `updater`, `clipboardRead`, `systemFonts`, `license` |
 
 `interfaceZoom: false` leaves Cmd/Ctrl `+`, `-` and `0` to the browser instead
 of swallowing them, and drops those three rows from the hotkeys screen.
 
-`multiWindow: false` means the host cannot open a *second window* on demand —
+`multiWindow: false` means the host cannot open a _second window_ on demand —
 what `cmd_new_child_window` does for Settings and workspace switching. It is not
 a claim that nothing else is looking: other tabs may well be open on the same
 worker, and it pushes every write to all of them regardless.
@@ -159,7 +159,7 @@ for the desktop's window label. The worker fans each write out to every
 connected tab, and the receiving tab's store applies or ignores it exactly as a
 desktop window would.
 
-The label is deliberately *not* kept in `sessionStorage`: duplicating a tab
+The label is deliberately _not_ kept in `sessionStorage`: duplicating a tab
 copies session storage, and two tabs sharing one identity would each mistake the
 other's writes for an echo of their own and drop them.
 
@@ -207,7 +207,7 @@ network half of a send runs on a small stateless server,
 
 **What sends today:** any saved request whose templates are variables and whose
 authentication is none, or an inline header. Sending a request that needs a
-template *function* (`${[ timestamp() ]}`) or an authentication plugin (bearer,
+template _function_ (`${[ timestamp() ]}`) or an authentication plugin (bearer,
 basic, OAuth, …) is refused before anything leaves the tab, with a message naming
 what it needs; those light up when plugins run in the browser. Requests with a
 file body or multipart file fields are refused by the server (it has no access to

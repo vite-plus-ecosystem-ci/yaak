@@ -565,7 +565,10 @@ function importOperationName(operation: UnknownRecord, method: string, path: str
  * description, since a name that long is no easier to scan than the path.
  */
 function firstLine(value: string | undefined): string | undefined {
-  const line = value?.split("\n").find((l) => l.trim().length > 0)?.trim();
+  const line = value
+    ?.split("\n")
+    .find((l) => l.trim().length > 0)
+    ?.trim();
   if (line == null || line.length > MAX_NAME_LENGTH) return undefined;
   return line;
 }
@@ -738,8 +741,7 @@ function shouldInlinePathParameter(
   // so `{id}` and `{id}:cancel` stay placeholders while `report.{format}` can't
   const placeholderExpressible = matchingSegments.every(
     (segment) =>
-      segment === template ||
-      (segment.startsWith(template) && segment[template.length] === ":"),
+      segment === template || (segment.startsWith(template) && segment[template.length] === ":"),
   );
   if (matchingSegments.length === 0 || !placeholderExpressible) return true;
   if (isRecord(parameter.content)) return false;
@@ -1009,9 +1011,7 @@ function serializeCookieParameter(parameter: UnknownRecord, importState: ImportS
   if (isRecord(value)) {
     const entries = Object.entries(value);
     return explode
-      ? entries
-          .map(([key, entryValue]) => `${key}=${stringifyExampleValue(entryValue)}`)
-          .join("; ")
+      ? entries.map(([key, entryValue]) => `${key}=${stringifyExampleValue(entryValue)}`).join("; ")
       : `${name}=${entries.flat().map(stringifyExampleValue).join(",")}`;
   }
   return `${name}=${stringifyExampleValue(value)}`;
@@ -1158,7 +1158,9 @@ function importBody({
     .filter((p) => stringAt(p, "in") === "formData");
   if (formParameters.length > 0) {
     const contentType =
-      toArray(operation.consumes ?? spec.consumes).find((c): c is string => typeof c === "string") ??
+      toArray(operation.consumes ?? spec.consumes).find(
+        (c): c is string => typeof c === "string",
+      ) ??
       (formParameters.some((p) => stringAt(p, "type") === "file")
         ? "multipart/form-data"
         : "application/x-www-form-urlencoded");
@@ -1411,7 +1413,11 @@ function mediaTypeExample(mediaType: UnknownRecord, importState: ImportState): u
   return schemaToExample(mediaType.schema, importState);
 }
 
-function schemaToFormParameters(schema: unknown, importState: ImportState, example?: UnknownRecord) {
+function schemaToFormParameters(
+  schema: unknown,
+  importState: ImportState,
+  example?: UnknownRecord,
+) {
   const resolvedSchema = toRecord(importState.resolveSchema(schema));
   const required = toArray(resolvedSchema.required).filter(
     (name): name is string => typeof name === "string",
@@ -1574,7 +1580,6 @@ function coerceToDeclaredType(example: unknown, schema: UnknownRecord): unknown 
   }
   return example;
 }
-
 
 function inferSchemaType(schema: UnknownRecord): string {
   const rawType = schema.type;
