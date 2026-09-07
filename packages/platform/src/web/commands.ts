@@ -76,7 +76,12 @@ const HANDLERS: Partial<Record<AppCmd, Handler>> = {
   cmd_send_http_request: (payload, db) => {
     const requestId = str(payload, "requestId");
     if (requestId == null) throw new Error("cmd_send_http_request needs a requestId");
-    return sendHttpRequest(db, requestId, str(payload, "environmentId"), str(payload, "cookieJarId"));
+    return sendHttpRequest(
+      db,
+      requestId,
+      str(payload, "environmentId"),
+      str(payload, "cookieJarId"),
+    );
   },
 
   /* -------------------------------- app ---------------------------------- */
@@ -262,10 +267,16 @@ const DECLINED: Partial<Record<AppCmd, [reason: string, capability: CapabilityNa
   cmd_ws_connect: ["WebSocket requests aren't available in the browser yet", "websocket"],
   cmd_ws_send: ["WebSocket requests aren't available in the browser yet", "websocket"],
   cmd_ws_close: ["WebSocket requests aren't available in the browser yet", "websocket"],
-  cmd_ws_delete_connections: ["WebSocket requests aren't available in the browser yet", "websocket"],
+  cmd_ws_delete_connections: [
+    "WebSocket requests aren't available in the browser yet",
+    "websocket",
+  ],
 
   // Anything that needs files the page can't reach.
-  cmd_import_data: ["Importing from a file needs a filesystem, which a browser tab has no", "localFiles"],
+  cmd_import_data: [
+    "Importing from a file needs a filesystem, which a browser tab has no",
+    "localFiles",
+  ],
   cmd_import_url: ["Importing from a URL needs the Yaak server, which isn't available yet", null],
   cmd_commit_import: ["Importing needs a plugin, which this host doesn't run", null],
   cmd_list_import_sources: ["Importing isn't available in the browser yet", null],
@@ -298,8 +309,14 @@ const DECLINED: Partial<Record<AppCmd, [reason: string, capability: CapabilityNa
   cmd_plugins_uninstall: ["Plugins aren't available in the browser yet", "plugins"],
   cmd_plugins_updates: ["Plugins aren't available in the browser yet", "plugins"],
   cmd_plugins_update_all: ["Plugins aren't available in the browser yet", "plugins"],
-  cmd_template_function_config: ["Template functions come from plugins, which this host doesn't run", "plugins"],
-  cmd_template_tokens_to_string: ["Template functions come from plugins, which this host doesn't run", "plugins"],
+  cmd_template_function_config: [
+    "Template functions come from plugins, which this host doesn't run",
+    "plugins",
+  ],
+  cmd_template_tokens_to_string: [
+    "Template functions come from plugins, which this host doesn't run",
+    "plugins",
+  ],
   cmd_call_http_request_action: ["Plugins aren't available in the browser yet", "plugins"],
   cmd_call_websocket_request_action: ["Plugins aren't available in the browser yet", "plugins"],
   cmd_call_grpc_request_action: ["Plugins aren't available in the browser yet", "plugins"],

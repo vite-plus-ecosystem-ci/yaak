@@ -46,7 +46,7 @@ docker run -p 8080:8080 \
   anything strangers can reach — see [What it refuses](#what-it-refuses-and-why).
   Turn it on for an instance on your own network, where calling the API on the
   next machine is the whole point. Note that "private" is relative to the
-  *container*: `127.0.0.1` is the container itself, and reaching the Docker
+  _container_: `127.0.0.1` is the container itself, and reaching the Docker
   host means `host.docker.internal` (or `--network host`).
 - **`YAAK_WEB_RATE_LIMIT_PER_MINUTE`** defaults to 120 sends per client IP,
   which suits a public instance and not a team of your own; `0` disables it.
@@ -81,18 +81,18 @@ origin unless `VITE_YAAK_WEB_URL` was set when it was built.
 Every flag has a `YAAK_WEB_*` environment variable, so a container needs no
 arguments; `--help` lists them all.
 
-| Flag | Default | What |
-| --- | --- | --- |
-| `--serve` | off | Also serve a built web client from this directory, on the same origin. |
-| `--bind` | `127.0.0.1:9227` | Listen address. The image sets `0.0.0.0:8080`. |
-| `--allow-private-networks` | off | Allow sends to loopback, private and link-local addresses. |
-| `--allowed-origins` | `*` | CORS origins, comma-separated. Unused when the app is served from here: same origin, no CORS. |
-| `--max-request-bytes` | 16 MiB | Largest rendered request accepted from the tab. |
-| `--max-response-bytes` | 64 MiB | Largest upstream body relayed before the send is cut off. |
-| `--max-timeout-secs` | 60 | Ceiling on a send's timeout; a request asking for more (or none) gets this. |
-| `--rate-limit-per-minute` | 120 | Sends per client IP per minute; 0 disables. |
-| `--max-concurrent` | 256 | Sends in flight at once. |
-| `--trust-forwarded-for` | off | Take the client IP from `X-Forwarded-For`. Only behind a load balancer that sets it. |
+| Flag                       | Default          | What                                                                                          |
+| -------------------------- | ---------------- | --------------------------------------------------------------------------------------------- |
+| `--serve`                  | off              | Also serve a built web client from this directory, on the same origin.                        |
+| `--bind`                   | `127.0.0.1:9227` | Listen address. The image sets `0.0.0.0:8080`.                                                |
+| `--allow-private-networks` | off              | Allow sends to loopback, private and link-local addresses.                                    |
+| `--allowed-origins`        | `*`              | CORS origins, comma-separated. Unused when the app is served from here: same origin, no CORS. |
+| `--max-request-bytes`      | 16 MiB           | Largest rendered request accepted from the tab.                                               |
+| `--max-response-bytes`     | 64 MiB           | Largest upstream body relayed before the send is cut off.                                     |
+| `--max-timeout-secs`       | 60               | Ceiling on a send's timeout; a request asking for more (or none) gets this.                   |
+| `--rate-limit-per-minute`  | 120              | Sends per client IP per minute; 0 disables.                                                   |
+| `--max-concurrent`         | 256              | Sends in flight at once.                                                                      |
+| `--trust-forwarded-for`    | off              | Take the client IP from `X-Forwarded-For`. Only behind a load balancer that sets it.          |
 
 ## Serving the app
 
@@ -172,7 +172,7 @@ in `main.rs`. Put TLS in front of a public instance.
 {
   "request":  { "url": "https://…", "method": "GET", "headers": […], "body": {…}, "bodyType": null, "urlParameters": […] },
   "settings": { "validateCertificates": true, "followRedirects": true, "timeoutMs": 0, "sendCookies": true, "storeCookies": true },
-  "cookies":  [ … ] 
+  "cookies":  [ … ]
 }
 ```
 
@@ -184,13 +184,13 @@ jar's contents (or `null` for no jar).
 The reply is `application/x-ndjson`, one JSON frame per line, in the order things
 happened:
 
-| `type` | When | Carries |
-| --- | --- | --- |
-| `event` | as the engine produces them | one timeline event, in the desktop's `http_response_event.event` shape |
+| `type`     | When                                      | Carries                                                                            |
+| ---------- | ----------------------------------------- | ---------------------------------------------------------------------------------- |
+| `event`    | as the engine produces them               | one timeline event, in the desktop's `http_response_event.event` shape             |
 | `response` | once, when the final hop's headers arrive | status, all headers, request headers as sent, remote address, HTTP version, timing |
-| `body` | as the body is read | a decompressed chunk, base64 |
-| `done` | last, on success | elapsed, byte counts, and the cookie jar as the send left it |
-| `error` | last, on failure | the reason, and any cookies collected before the failure |
+| `body`     | as the body is read                       | a decompressed chunk, base64                                                       |
+| `done`     | last, on success                          | elapsed, byte counts, and the cookie jar as the send left it                       |
+| `error`    | last, on failure                          | the reason, and any cookies collected before the failure                           |
 
 Refusals that happen before anything is sent (a blocked destination, a bad body,
 rate limit, capacity) are plain HTTP errors (`403`, `400`, `429`, `503`) with
