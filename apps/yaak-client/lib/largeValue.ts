@@ -229,7 +229,10 @@ function toBase64(bytes: Uint8Array): string {
  */
 export async function saveValue(text: string, sniffed: SniffedValue | null, name: string) {
   const ext = sniffed == null ? "txt" : (mime.getExtension(sniffed.mime) ?? "bin");
-  const filepath = await platform.dialog.save({ defaultPath: `${name}.${ext}`, title: "Save Value" });
+  const filepath = await platform.dialog.save({
+    defaultPath: `${name}.${ext}`,
+    title: "Save Value",
+  });
   if (filepath == null) {
     return; // Cancelled
   }

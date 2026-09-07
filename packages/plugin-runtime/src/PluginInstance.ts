@@ -649,10 +649,12 @@ export class PluginInstance {
           complete: info.complete,
         },
         async (offset, length) => {
-          const chunk = await this.#sendForReply<ReadHttpResponseBodyChunkResponse>(
-            context,
-            { type: "read_http_response_body_chunk_request", responseId, offset, length },
-          );
+          const chunk = await this.#sendForReply<ReadHttpResponseBodyChunkResponse>(context, {
+            type: "read_http_response_body_chunk_request",
+            responseId,
+            offset,
+            length,
+          });
           return decodeBase64Chunk(chunk.data);
         },
         { refresh: bodyInfo },
@@ -853,7 +855,10 @@ export class PluginInstance {
           // carries the only copy of its body. A saved one is read back from
           // the host like any other. Callers get the same thing either way.
           if (body == null) {
-            return { httpResponse: forPlugin(httpResponse), body: await storedBody(httpResponse.id) };
+            return {
+              httpResponse: forPlugin(httpResponse),
+              body: await storedBody(httpResponse.id),
+            };
           }
 
           const bytes = decodeBase64Chunk(body);

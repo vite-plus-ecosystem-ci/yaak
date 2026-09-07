@@ -34,7 +34,7 @@ only for publishing plugins to the Yaak registry.
 Two consequences worth holding onto. Requests you create are permanent user data
 in an app they use, not scratch files, so name them the way the user would and
 clean up anything created just to test. And because the app is right there, the
-CLI is usually the wrong place to *read* a response in detail; it is the right
+CLI is usually the wrong place to _read_ a response in detail; it is the right
 place to build, organize, and run requests.
 
 ## The CLI describes itself
