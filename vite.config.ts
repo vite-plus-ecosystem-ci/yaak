@@ -29,6 +29,7 @@ export default defineConfig({
     },
   },
   test: {
+    clearMocks: false,
     // Nested git worktrees live under .claude, and their tests are not this checkout's
     exclude: ["**/node_modules/**", "**/flatpak/**", "**/.claude/**"],
   },

@@ -135,16 +135,17 @@
     "tailwindcss": "^4.3.2",
     "tar": "^7.5.22",
     "typescript": "^5.8.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.3.2",
-    "vite-plus": "^0.3.0",
-    "vitest": "^4.1.10",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.134033efc595ae5efab9df5c177a9ae20904a5d9",
+    "vite-plus": "0.0.0-commit.134033efc595ae5efab9df5c177a9ae20904a5d9",
+    "vitest": "5.0.1",
     "yauzl": "^3.4.0"
   },
   "overrides": {
     "@vitest/mocker": "^4.1.11",
     "js-yaml": "^4.3.1",
     "underscore": "^1.13.8",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.3.2"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.134033efc595ae5efab9df5c177a9ae20904a5d9",
+    "vitest": "5.0.1"
   },
   "packageManager": "npm@11.11.1"
 }
