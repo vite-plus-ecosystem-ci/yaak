@@ -94,9 +94,9 @@
     "@yaakapp-internal/ui": "^1.0.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "rollup": "^4.63.4",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.3.3",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.73ce44ef507f7c2aed23bc5addd747d0e3d0b33a",
     "vite-plugin-static-copy": "^4.1.1",
     "vite-plugin-wasm": "^3.5.0",
-    "vite-plus": "^0.3.3"
+    "vite-plus": "0.0.0-commit.73ce44ef507f7c2aed23bc5addd747d0e3d0b33a"
   }
 }
