@@ -21,9 +21,17 @@ const RUN_IN_TERMINAL = "Run in a terminal.";
 export function cliSetup(client: AgentClient): AgentSetup {
   switch (client) {
     case "claude_code":
-      return { where: RUN_IN_TERMINAL, snippet: "claude mcp add yaak -- yaak mcp", language: "shell" };
+      return {
+        where: RUN_IN_TERMINAL,
+        snippet: "claude mcp add yaak -- yaak mcp",
+        language: "shell",
+      };
     case "codex":
-      return { where: RUN_IN_TERMINAL, snippet: "codex mcp add yaak -- yaak mcp", language: "shell" };
+      return {
+        where: RUN_IN_TERMINAL,
+        snippet: "codex mcp add yaak -- yaak mcp",
+        language: "shell",
+      };
     case "cursor":
       return {
         where: "Add to ~/.cursor/mcp.json.",
