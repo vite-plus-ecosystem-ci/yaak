@@ -13,7 +13,9 @@ import { JSONPath } from "jsonpath-plus";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
-const version = JSON.parse(readFileSync(require.resolve("jsonpath-plus/package.json"), "utf8")).version;
+const version = JSON.parse(
+  readFileSync(require.resolve("jsonpath-plus/package.json"), "utf8"),
+).version;
 if (version !== "11.0.0") throw new Error(`expected jsonpath-plus 11.0.0, found ${version}`);
 
 /** The plugin's literal fast path, as `jsonPathToSegments` was before the port. */
@@ -75,9 +77,20 @@ const docs = {
   store: {
     store: {
       book: [
-        { category: "reference", author: "Nigel Rees", title: "Sayings of the Century", price: 8.95 },
+        {
+          category: "reference",
+          author: "Nigel Rees",
+          title: "Sayings of the Century",
+          price: 8.95,
+        },
         { category: "fiction", author: "Evelyn Waugh", title: "Sword of Honour", price: 12.99 },
-        { category: "fiction", author: "Herman Melville", title: "Moby Dick", isbn: "0-553-21311-3", price: 8.99 },
+        {
+          category: "fiction",
+          author: "Herman Melville",
+          title: "Moby Dick",
+          isbn: "0-553-21311-3",
+          price: 8.99,
+        },
         {
           category: "fiction",
           author: "J. R. R. Tolkien",
@@ -91,7 +104,28 @@ const docs = {
   },
   items: { items: [{ id: 1 }, { id: 2 }, { id: 3 }], "space key": 4 },
   vals: {
-    vals: [0, 1, "1", "", " ", "0", null, true, false, [], [1], [1, 2], {}, "abc", "10", "9", 1.5, -1, "a1", 2],
+    vals: [
+      0,
+      1,
+      "1",
+      "",
+      " ",
+      "0",
+      null,
+      true,
+      false,
+      [],
+      [1],
+      [1, 2],
+      {},
+      "abc",
+      "10",
+      "9",
+      1.5,
+      -1,
+      "a1",
+      2,
+    ],
   },
   mixed: {
     str: "Hello World",
@@ -109,21 +143,43 @@ const docs = {
   },
   people: {
     people: [
-      { name: "Ann", age: 31, email: "ann@example.com", tags: ["dev", "ops"], address: { city: "Paris" },
-        pets: [{ type: "cat", age: 7 }] },
+      {
+        name: "Ann",
+        age: 31,
+        email: "ann@example.com",
+        tags: ["dev", "ops"],
+        address: { city: "Paris" },
+        pets: [{ type: "cat", age: 7 }],
+      },
       { name: "Bob", age: 17, tags: ["admin"], address: null, pets: [] },
-      { name: "Cleo", email: "", tags: [], address: { city: "Oslo", zip: "0150" },
-        pets: [{ type: "dog", age: 2 }, { type: "cat", age: 1 }] },
-      { name: "Dmitri", age: 64, email: "d@example.com", tags: ["dev"], address: { city: "Paris" },
-        pets: [{ type: "fish", age: 9 }] },
+      {
+        name: "Cleo",
+        email: "",
+        tags: [],
+        address: { city: "Oslo", zip: "0150" },
+        pets: [
+          { type: "dog", age: 2 },
+          { type: "cat", age: 1 },
+        ],
+      },
+      {
+        name: "Dmitri",
+        age: 64,
+        email: "d@example.com",
+        tags: ["dev"],
+        address: { city: "Paris" },
+        pets: [{ type: "fish", age: 9 }],
+      },
     ],
     groups: [
       { name: "red", members: [{ active: false }, { active: true }] },
       { name: "blue", members: [{ active: false }] },
     ],
   },
-  numeric: JSON.parse('{"b":1,"2":"two","10":"ten","a":[0,1,2,3,4,5,6,7,8,9],"01":"lead","-1":"minus"}'),
-  unicode: { "ключ": "значение", "emoji 🤔": "face", "日本": { "語": 1 }, "ü": [1, 2], "z": "🤔ok" },
+  numeric: JSON.parse(
+    '{"b":1,"2":"two","10":"ten","a":[0,1,2,3,4,5,6,7,8,9],"01":"lead","-1":"minus"}',
+  ),
+  unicode: { ключ: "значение", "emoji 🤔": "face", 日本: { 語: 1 }, ü: [1, 2], z: "🤔ok" },
   deep: {
     a: { b: 1, a: { b: 2, c: [{ a: { b: 3 } }, { b: 4 }] } },
     c: [[1, [2]], { a: 5 }],
@@ -132,16 +188,53 @@ const docs = {
   },
   weird: {
     weird: {
-      "*": 1, "..": 2, "$": 3, "@": 4, "~": 5, "^": 6, "a.b": 7, "a,b": 8, "`x": 9, "x y": 10,
-      "[": 11, "]": 12, "'q'": 13, '"dq"': 14, "?(true)": 15, "": 16, "%@%": 17, "a~b": 18,
-      "quote\"key": 19, "single'key": 20, "back\\slash": 21, "length": 22, "0:2": 23,
+      "*": 1,
+      "..": 2,
+      $: 3,
+      "@": 4,
+      "~": 5,
+      "^": 6,
+      "a.b": 7,
+      "a,b": 8,
+      "`x": 9,
+      "x y": 10,
+      "[": 11,
+      "]": 12,
+      "'q'": 13,
+      '"dq"': 14,
+      "?(true)": 15,
+      "": 16,
+      "%@%": 17,
+      "a~b": 18,
+      'quote"key': 19,
+      "single'key": 20,
+      "back\\slash": 21,
+      length: 22,
+      "0:2": 23,
     },
     "*": "root-star",
     plain: { x: 1 },
   },
-  nums: { nums: [1, 2.5, 1e21, 1e-7, 123456789012345680000, 0.1, 100, 3.14159, 1e300, 5e-324, 0.000001, 1.5e-7, 1.005, -1.5, 0.5, 255] },
+  nums: {
+    nums: [
+      1, 2.5, 1e21, 1e-7, 123456789012345680000, 0.1, 100, 3.14159, 1e300, 5e-324, 0.000001, 1.5e-7,
+      1.005, -1.5, 0.5, 255,
+    ],
+  },
   rawnums: '{"n":[1.0,10.50,-0,1E3,1e400,0.30000000000000004,9007199254740993,-0.0,1e-400]}',
-  strs: { strs: ["  padded  ", "Hello", "hello world", "a,b,c", "ABC", "x-y-z", "café", "🤔ok", "line\nbreak"] },
+  strs: {
+    strs: [
+      "  padded  ",
+      "Hello",
+      "hello world",
+      "a,b,c",
+      "ABC",
+      "x-y-z",
+      "café",
+      "🤔ok",
+      "line\nbreak",
+    ],
+  },
   rootstr: "hello",
   rootnum: 42,
   roottrue: true,
@@ -627,7 +720,8 @@ for (const expr of [
   "'abc'.concat('d') == 'abcd'",
 ]) {
   const path = `$.items[?(${expr})].id`;
-  const unsupportedMethod = /padStart|charAt|toPrecision|\.map$|replace\(|toLocaleUpperCase|concat\(/.test(expr);
+  const unsupportedMethod =
+    /padStart|charAt|toPrecision|\.map$|replace\(|toLocaleUpperCase|concat\(/.test(expr);
   if (unsupportedMethod) unsupported("items", path);
   else same("items", path);
 }
@@ -877,26 +971,62 @@ rfc("store", "$..book[-1].title", "rfc-negative-index", ["The Lord of the Rings"
 rfc("store", "$..book[-2].title", "rfc-negative-index", ["Moby Dick"]);
 rfc("store", "$..book[::-1].price", "rfc-negative-step", [22.99, 8.99, 12.99, 8.95]);
 rfc("store", "$..book[-1::-2].price", "rfc-negative-step", [22.99, 12.99]);
-rfc("store", "$.store.book[?@.price < 10].title", "rfc-filter", ["Sayings of the Century", "Moby Dick"]);
+rfc("store", "$.store.book[?@.price < 10].title", "rfc-filter", [
+  "Sayings of the Century",
+  "Moby Dick",
+]);
 rfc("store", "$.store.book[?@.isbn].title", "rfc-filter", ["Moby Dick", "The Lord of the Rings"]);
-rfc("store", "$.store.book[?!@.isbn].title", "rfc-filter", ["Sayings of the Century", "Sword of Honour"]);
-rfc("store", "$.store.book[?@.price < 10 && @.category == 'fiction'].title", "rfc-filter", ["Moby Dick"]);
-rfc("store", "$.store.book[?@.price > $.store.bicycle.price].title", "rfc-filter", ["The Lord of the Rings"]);
-rfc("store", "$.store.book[?search(@.title, '^S')].title", "rfc-filter", ["Sayings of the Century", "Sword of Honour"]);
+rfc("store", "$.store.book[?!@.isbn].title", "rfc-filter", [
+  "Sayings of the Century",
+  "Sword of Honour",
+]);
+rfc("store", "$.store.book[?@.price < 10 && @.category == 'fiction'].title", "rfc-filter", [
+  "Moby Dick",
+]);
+rfc("store", "$.store.book[?@.price > $.store.bicycle.price].title", "rfc-filter", [
+  "The Lord of the Rings",
+]);
+rfc("store", "$.store.book[?search(@.title, '^S')].title", "rfc-filter", [
+  "Sayings of the Century",
+  "Sword of Honour",
+]);
 rfc("store", "$.store.book[?match(@.isbn, '0-5.*')].title", "rfc-filter", ["Moby Dick"]);
-rfc("store", "$.store.book[?length(@) == 5].title", "rfc-filter", ["Moby Dick", "The Lord of the Rings"]);
-rfc("store", "$.store.book[?(length(@.title) > 15)].title", "rfc-function", ["Sayings of the Century", "The Lord of the Rings"]);
-rfc("store", "$.store.book[?(count(@.*) == 5)].title", "rfc-function", ["Moby Dick", "The Lord of the Rings"]);
-rfc("store", "$.store.book[?(value(@.price) < 9)].title", "rfc-function", ["Sayings of the Century", "Moby Dick"]);
-rfc("store", "$.store.book[?(match(@.author, '.*Tolkien'))].author", "rfc-function", ["J. R. R. Tolkien"]);
+rfc("store", "$.store.book[?length(@) == 5].title", "rfc-filter", [
+  "Moby Dick",
+  "The Lord of the Rings",
+]);
+rfc("store", "$.store.book[?(length(@.title) > 15)].title", "rfc-function", [
+  "Sayings of the Century",
+  "The Lord of the Rings",
+]);
+rfc("store", "$.store.book[?(count(@.*) == 5)].title", "rfc-function", [
+  "Moby Dick",
+  "The Lord of the Rings",
+]);
+rfc("store", "$.store.book[?(value(@.price) < 9)].title", "rfc-function", [
+  "Sayings of the Century",
+  "Moby Dick",
+]);
+rfc("store", "$.store.book[?(match(@.author, '.*Tolkien'))].author", "rfc-function", [
+  "J. R. R. Tolkien",
+]);
 rfc("store", "$..[?@.color].color", "rfc-filter", ["red"]);
 rfc("store", "$..book[?@.author =~ 'x']", "rfc-filter", ERROR);
 rfc("store", "$.store.book[?@.price == 8.95].title", "rfc-filter", ["Sayings of the Century"]);
-rfc("store", "$.store.book[?@.title == \"Moby Dick\"].price", "rfc-filter", [8.99]);
-rfc("store", "$.store.book[?@.missing == @.other].title", "rfc-filter",
-  ["Sayings of the Century", "Sword of Honour", "Moby Dick", "The Lord of the Rings"]);
+rfc("store", '$.store.book[?@.title == "Moby Dick"].price', "rfc-filter", [8.99]);
+rfc("store", "$.store.book[?@.missing == @.other].title", "rfc-filter", [
+  "Sayings of the Century",
+  "Sword of Honour",
+  "Moby Dick",
+  "The Lord of the Rings",
+]);
 rfc("store", "$.store.book[?@ == @].price", "rfc-filter", [8.95, 12.99, 8.99, 22.99]);
-rfc("store", "$.store.book[?@.price != 8.95 && @.price != 12.99].price", "rfc-filter", [8.99, 22.99]);
+rfc(
+  "store",
+  "$.store.book[?@.price != 8.95 && @.price != 12.99].price",
+  "rfc-filter",
+  [8.99, 22.99],
+);
 
 // Recursive descent order over a nested document.
 same(
@@ -1011,9 +1141,15 @@ same("weird", '$.weird["a.b"]~');
 same("weird", '$["weird"]["a.b"]^');
 same("weird", '$["weird"][*]');
 same("weird", "$['plain'].*");
-add("store", "$..book[0]['title','author']", "literal-key", ["Sayings of the Century", "Nigel Rees"]);
+add("store", "$..book[0]['title','author']", "literal-key", [
+  "Sayings of the Century",
+  "Nigel Rees",
+]);
 add("store", '$..book[0]["title","price"]', "literal-key", ["Sayings of the Century", 8.95]);
-add("store", '$..book[?(@.price > 20)]["title", "isbn"]', "literal-key", ["The Lord of the Rings", "0-395-19395-8"]);
+add("store", '$..book[?(@.price > 20)]["title", "isbn"]', "literal-key", [
+  "The Lord of the Rings",
+  "0-395-19395-8",
+]);
 same("store", "$['store']['book'][*]['title']");
 
 // Unicode keys and values.
@@ -1117,9 +1253,27 @@ same(
   "$.nums[?(@ >>> 0 == 1)]",
   "$.nums[(@.length - 1)]",
 );
-unsupported("nums", "$.nums[?(@.toPrecision(2) == '2.5')]", "$.nums[?(@.toExponential() == '1e+0')]");
-same("nums", "$.nums[?(@.toString(3) == '0.1')]", "$.nums[?(@.toString(2).length > 20)]", "$.nums[?(@.toString(36) == '1.i')]", "$.nums[?(@.toString(16) == '2.8')]");
-same("rawnums", "$.n[*]", "$.n[?(@ === 0)]", "$.n[?(1 / @ < 0)]", "$.n[?(@ > 1e308)]", "$.n[?(@ == 10.5)]", "$.n.length");
+unsupported(
+  "nums",
+  "$.nums[?(@.toPrecision(2) == '2.5')]",
+  "$.nums[?(@.toExponential() == '1e+0')]",
+);
+same(
+  "nums",
+  "$.nums[?(@.toString(3) == '0.1')]",
+  "$.nums[?(@.toString(2).length > 20)]",
+  "$.nums[?(@.toString(36) == '1.i')]",
+  "$.nums[?(@.toString(16) == '2.8')]",
+);
+same(
+  "rawnums",
+  "$.n[*]",
+  "$.n[?(@ === 0)]",
+  "$.n[?(1 / @ < 0)]",
+  "$.n[?(@ > 1e308)]",
+  "$.n[?(@ == 10.5)]",
+  "$.n.length",
+);
 
 // String methods.
 same(
@@ -1340,7 +1494,12 @@ same(
   "$.people[?(@.tags.includes('dev', -1))].name",
 );
 add("people", "$.people[?(@.age > 30)]['name','age']", "literal-key", ["Ann", 31, "Dmitri", 64]);
-same("weird", `$.weird[?(@path == "$['weird']['a.b']")]`, `$.weird[?(@path == "$['weird']['single'key']")]`, "$.weird[?(@path.includes('*'))]");
+same(
+  "weird",
+  `$.weird[?(@path == "$['weird']['a.b']")]`,
+  `$.weird[?(@path == "$['weird']['single'key']")]`,
+  "$.weird[?(@path.includes('*'))]",
+);
 
 // Root documents that are not objects.
 same("rootstr", "$", "$.length", "$[0]", "$[*]", "$..*");
@@ -1402,7 +1561,10 @@ const caseNames = new Set();
 const problems = [];
 const out = { generator: "generate-jsonpath-plus.mjs", jsonpathPlus: version, docs: {}, cases: [] };
 for (const [name, doc] of Object.entries(docs)) {
-  out.docs[name] = typeof doc === "string" && name.startsWith("raw") || name === "dupes" ? doc : JSON.stringify(doc);
+  out.docs[name] =
+    (typeof doc === "string" && name.startsWith("raw")) || name === "dupes"
+      ? doc
+      : JSON.stringify(doc);
 }
 for (const { doc, path, deviation, expect } of cases) {
   const key = `${doc} ${path}`;
@@ -1416,7 +1578,8 @@ for (const { doc, path, deviation, expect } of cases) {
     entry.expected = plus;
   } else {
     entry.deviation = deviation;
-    entry.expected = expect === ERROR ? { error: true } : { content: JSON.stringify(expect, null, 2) };
+    entry.expected =
+      expect === ERROR ? { error: true } : { content: JSON.stringify(expect, null, 2) };
     entry.jsonpathPlus = plus;
     if (JSON.stringify(entry.expected) === JSON.stringify(plus)) {
       problems.push(`${key} is marked ${deviation} but jsonpath-plus already gives that`);

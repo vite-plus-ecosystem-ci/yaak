@@ -200,7 +200,9 @@ function SetupRow({
         language={setup.language}
         defaultValue={setup.snippet}
         className="mt-3 border border-border-subtle rounded-md px-2"
-        actions={<CopyIconButton size="sm" variant="border" text={setup.snippet} title="Copy setup" />}
+        actions={
+          <CopyIconButton size="sm" variant="border" text={setup.snippet} title="Copy setup" />
+        }
       />
     </div>
   );
