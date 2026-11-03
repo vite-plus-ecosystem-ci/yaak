@@ -15,12 +15,7 @@ import { appInfo } from "../../lib/appInfo";
 import { rpc } from "../../lib/rpc";
 import { Link } from "../core/Link";
 import { SegmentedControl } from "../core/SegmentedControl";
-import {
-  SettingCommand,
-  SettingSnippet,
-  SettingsList,
-  SettingsSection,
-} from "../core/SettingRow";
+import { SettingCommand, SettingSnippet, SettingsList, SettingsSection } from "../core/SettingRow";
 import { DeprecatedPluginBanner } from "./SettingsPlugins";
 
 const CLI_INSTALL_COMMAND = "npm install -g @yaakapp/cli";
