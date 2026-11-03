@@ -95,9 +95,9 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "happy-dom": "^21.0.4",
     "rollup": "^4.66.0",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^1.4.0",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.943ee4a9e322a7ad4b1b4113f844cd541a10b159",
     "vite-plugin-static-copy": "^4.1.1",
     "vite-plugin-wasm": "^3.5.0",
-    "vite-plus": "^1.4.0"
+    "vite-plus": "0.0.0-commit.943ee4a9e322a7ad4b1b4113f844cd541a10b159"
   }
 }
