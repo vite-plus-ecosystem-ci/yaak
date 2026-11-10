@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import { contentTypeCharset, decodeBodyText, strictUtf8Text } from "./decodeBodyText";
 
 const latin1 = (text: string) => Uint8Array.from(text, (c) => c.charCodeAt(0));
