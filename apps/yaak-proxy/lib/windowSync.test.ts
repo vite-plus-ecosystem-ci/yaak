@@ -35,7 +35,9 @@ describe("windowSync", () => {
   test("a change is announced as coming from this window", () => {
     tauri.label = "other__settings";
     announceEngineChange();
-    expect(tauri.sent).toEqual([{ event: "window_changed_engine", payload: { from: "other__settings" } }]);
+    expect(tauri.sent).toEqual([
+      { event: "window_changed_engine", payload: { from: "other__settings" } },
+    ]);
   });
 
   test("a change in another window reads the state and the settings' queries again", () => {

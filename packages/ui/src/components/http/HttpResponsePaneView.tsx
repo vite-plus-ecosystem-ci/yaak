@@ -300,24 +300,24 @@ export function HttpResponsePaneView({
                 </ErrorBoundary>
               </TabContent>
               {!requestShownApart && (
-              <TabContent value={RESPONSE_TAB_REQUEST} ErrorBoundary={ErrorBoundary}>
-                <ConfirmLargeResponse
-                  contentLength={response.requestContentLength}
-                  contentType={response.contentType}
-                  noun="content"
-                  revealLabel="Reveal Request Body"
-                  getText={requestBody?.getText}
-                  renderCopyButton={renderCopyButton}
-                >
-                  {requestBody != null && (
-                    <RequestBodyViewer
-                      id={response.id}
-                      contentType={findHeader(response.requestHeaders, "content-type")}
-                      body={requestBody}
-                    />
-                  )}
-                </ConfirmLargeResponse>
-              </TabContent>
+                <TabContent value={RESPONSE_TAB_REQUEST} ErrorBoundary={ErrorBoundary}>
+                  <ConfirmLargeResponse
+                    contentLength={response.requestContentLength}
+                    contentType={response.contentType}
+                    noun="content"
+                    revealLabel="Reveal Request Body"
+                    getText={requestBody?.getText}
+                    renderCopyButton={renderCopyButton}
+                  >
+                    {requestBody != null && (
+                      <RequestBodyViewer
+                        id={response.id}
+                        contentType={findHeader(response.requestHeaders, "content-type")}
+                        body={requestBody}
+                      />
+                    )}
+                  </ConfirmLargeResponse>
+                </TabContent>
               )}
               <TabContent value={RESPONSE_TAB_HEADERS} ErrorBoundary={ErrorBoundary}>
                 <ResponseHeaders

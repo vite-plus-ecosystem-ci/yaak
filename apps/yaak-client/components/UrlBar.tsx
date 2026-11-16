@@ -10,5 +10,7 @@ type Props = Omit<UrlBarProps, "sendHotkeyAction" | "focusHotkeyAction" | "readO
 
 /** The shared URL bar, sending and focusing on the client's hotkeys */
 export const UrlBar = memo(function UrlBar(props: Props) {
-  return <BaseUrlBar {...props} sendHotkeyAction="request.send" focusHotkeyAction="url_bar.focus" />;
+  return (
+    <BaseUrlBar {...props} sendHotkeyAction="request.send" focusHotkeyAction="url_bar.focus" />
+  );
 });

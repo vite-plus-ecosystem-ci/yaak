@@ -254,35 +254,35 @@ export function HttpRequestPaneView({
       className={classNames(className, "h-full grid grid-rows-[auto_minmax(0,1fr)] grid-cols-1")}
     >
       {urlLine ?? (
-      <UrlBar
-        stateKey={`url.${request.id}`}
-        key={urlBarKey}
-        url={request.url}
-        placeholder={urlPlaceholder}
-        onPasteOverwrite={onUrlPasteOverwrite}
-        autocomplete={urlAutocomplete}
-        onSend={onSend}
-        onCancel={onCancel}
-        onUrlChange={onUrlChange}
-        readOnly={readOnly}
-        sendHotkeyAction={readOnly ? undefined : sendHotkeyAction}
-        focusHotkeyAction={readOnly ? undefined : focusHotkeyAction}
-        leftSlot={
-          <div className="py-0.5">
-            {methodSlot ?? (
-              <RequestMethodDropdown
-                method={request.method}
-                colored={methodColored}
-                onChange={onMethodChange}
-                readOnly={readOnly}
-                className="ml-0.5 h-full!"
-              />
-            )}
-          </div>
-        }
-        forceUpdateKey={urlForceUpdateKey ?? forceUpdateKey}
-        isLoading={isSending}
-      />
+        <UrlBar
+          stateKey={`url.${request.id}`}
+          key={urlBarKey}
+          url={request.url}
+          placeholder={urlPlaceholder}
+          onPasteOverwrite={onUrlPasteOverwrite}
+          autocomplete={urlAutocomplete}
+          onSend={onSend}
+          onCancel={onCancel}
+          onUrlChange={onUrlChange}
+          readOnly={readOnly}
+          sendHotkeyAction={readOnly ? undefined : sendHotkeyAction}
+          focusHotkeyAction={readOnly ? undefined : focusHotkeyAction}
+          leftSlot={
+            <div className="py-0.5">
+              {methodSlot ?? (
+                <RequestMethodDropdown
+                  method={request.method}
+                  colored={methodColored}
+                  onChange={onMethodChange}
+                  readOnly={readOnly}
+                  className="ml-0.5 h-full!"
+                />
+              )}
+            </div>
+          }
+          forceUpdateKey={urlForceUpdateKey ?? forceUpdateKey}
+          isLoading={isSending}
+        />
       )}
       <Tabs
         ref={tabsRef}

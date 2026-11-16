@@ -114,110 +114,110 @@ export function ResponseCookies({ response, side }: Props) {
   return (
     <div className="overflow-auto h-full pb-4 gap-y-3 flex flex-col pr-0.5">
       {side !== "received" && (
-      <DetailsBanner
-        defaultOpen
-        useStoredValue={useDetailsBannerStoredValue}
-        storageKey={`${response.ownerId}.sent_cookies`}
-        summary={
-          <h2 className="flex items-center">
-            Sent Cookies <CountBadge showZero count={sentCookies.length} />
-          </h2>
-        }
-      >
-        {sentCookies.length === 0 ? (
-          <NoCookies />
-        ) : (
-          <KeyValueRows>
-            {sentCookies.map((cookie, i) => (
-              // oxlint-disable-next-line react/no-array-index-key
-              <KeyValueRow labelColor="primary" key={i} label={cookie.name}>
-                {cookie.value}
-              </KeyValueRow>
-            ))}
-          </KeyValueRows>
-        )}
-      </DetailsBanner>
+        <DetailsBanner
+          defaultOpen
+          useStoredValue={useDetailsBannerStoredValue}
+          storageKey={`${response.ownerId}.sent_cookies`}
+          summary={
+            <h2 className="flex items-center">
+              Sent Cookies <CountBadge showZero count={sentCookies.length} />
+            </h2>
+          }
+        >
+          {sentCookies.length === 0 ? (
+            <NoCookies />
+          ) : (
+            <KeyValueRows>
+              {sentCookies.map((cookie, i) => (
+                // oxlint-disable-next-line react/no-array-index-key
+                <KeyValueRow labelColor="primary" key={i} label={cookie.name}>
+                  {cookie.value}
+                </KeyValueRow>
+              ))}
+            </KeyValueRows>
+          )}
+        </DetailsBanner>
       )}
 
       {side !== "sent" && (
-      <DetailsBanner
-        defaultOpen
-        useStoredValue={useDetailsBannerStoredValue}
-        storageKey={`${response.ownerId}.received_cookies`}
-        summary={
-          <h2 className="flex items-center">
-            Received Cookies <CountBadge showZero count={receivedCookies.length} />
-          </h2>
-        }
-      >
-        {receivedCookies.length === 0 ? (
-          <NoCookies />
-        ) : (
-          <div className="flex flex-col gap-4">
-            {receivedCookies.map((cookie, i) => (
-              // oxlint-disable-next-line react/no-array-index-key
-              <div key={i} className="flex flex-col gap-1">
-                <div className="flex items-center gap-2 my-1">
-                  <span
-                    className={classNames(
-                      "font-mono text-editor select-auto cursor-auto",
-                      cookie.isDeleted ? "line-through opacity-60 text-text-subtle" : "text-text",
-                    )}
-                  >
-                    {cookie.name}
-                    <span className="text-text-subtlest select-auto cursor-auto mx-0.5">=</span>
-                    {cookie.value}
-                  </span>
-                  {cookie.isDeleted && (
-                    <span className="text-xs font-sans text-danger bg-danger/10 px-1.5 py-0.5 rounded-sm">
-                      Deleted
+        <DetailsBanner
+          defaultOpen
+          useStoredValue={useDetailsBannerStoredValue}
+          storageKey={`${response.ownerId}.received_cookies`}
+          summary={
+            <h2 className="flex items-center">
+              Received Cookies <CountBadge showZero count={receivedCookies.length} />
+            </h2>
+          }
+        >
+          {receivedCookies.length === 0 ? (
+            <NoCookies />
+          ) : (
+            <div className="flex flex-col gap-4">
+              {receivedCookies.map((cookie, i) => (
+                // oxlint-disable-next-line react/no-array-index-key
+                <div key={i} className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2 my-1">
+                    <span
+                      className={classNames(
+                        "font-mono text-editor select-auto cursor-auto",
+                        cookie.isDeleted ? "line-through opacity-60 text-text-subtle" : "text-text",
+                      )}
+                    >
+                      {cookie.name}
+                      <span className="text-text-subtlest select-auto cursor-auto mx-0.5">=</span>
+                      {cookie.value}
                     </span>
-                  )}
+                    {cookie.isDeleted && (
+                      <span className="text-xs font-sans text-danger bg-danger/10 px-1.5 py-0.5 rounded-sm">
+                        Deleted
+                      </span>
+                    )}
+                  </div>
+                  <KeyValueRows>
+                    {[
+                      cookie.domain && (
+                        <KeyValueRow labelColor="info" label="Domain" key="domain">
+                          {cookie.domain}
+                        </KeyValueRow>
+                      ),
+                      cookie.path && (
+                        <KeyValueRow labelColor="info" label="Path" key="path">
+                          {cookie.path}
+                        </KeyValueRow>
+                      ),
+                      cookie.expires && (
+                        <KeyValueRow labelColor="info" label="Expires" key="expires">
+                          {cookie.expires}
+                        </KeyValueRow>
+                      ),
+                      cookie.maxAge && (
+                        <KeyValueRow labelColor="info" label="Max-Age" key="maxAge">
+                          {cookie.maxAge}
+                        </KeyValueRow>
+                      ),
+                      cookie.secure && (
+                        <KeyValueRow labelColor="info" label="Secure" key="secure">
+                          true
+                        </KeyValueRow>
+                      ),
+                      cookie.httpOnly && (
+                        <KeyValueRow labelColor="info" label="HttpOnly" key="httpOnly">
+                          true
+                        </KeyValueRow>
+                      ),
+                      cookie.sameSite && (
+                        <KeyValueRow labelColor="info" label="SameSite" key="sameSite">
+                          {cookie.sameSite}
+                        </KeyValueRow>
+                      ),
+                    ].filter((item): item is JSX.Element => Boolean(item))}
+                  </KeyValueRows>
                 </div>
-                <KeyValueRows>
-                  {[
-                    cookie.domain && (
-                      <KeyValueRow labelColor="info" label="Domain" key="domain">
-                        {cookie.domain}
-                      </KeyValueRow>
-                    ),
-                    cookie.path && (
-                      <KeyValueRow labelColor="info" label="Path" key="path">
-                        {cookie.path}
-                      </KeyValueRow>
-                    ),
-                    cookie.expires && (
-                      <KeyValueRow labelColor="info" label="Expires" key="expires">
-                        {cookie.expires}
-                      </KeyValueRow>
-                    ),
-                    cookie.maxAge && (
-                      <KeyValueRow labelColor="info" label="Max-Age" key="maxAge">
-                        {cookie.maxAge}
-                      </KeyValueRow>
-                    ),
-                    cookie.secure && (
-                      <KeyValueRow labelColor="info" label="Secure" key="secure">
-                        true
-                      </KeyValueRow>
-                    ),
-                    cookie.httpOnly && (
-                      <KeyValueRow labelColor="info" label="HttpOnly" key="httpOnly">
-                        true
-                      </KeyValueRow>
-                    ),
-                    cookie.sameSite && (
-                      <KeyValueRow labelColor="info" label="SameSite" key="sameSite">
-                        {cookie.sameSite}
-                      </KeyValueRow>
-                    ),
-                  ].filter((item): item is JSX.Element => Boolean(item))}
-                </KeyValueRows>
-              </div>
-            ))}
-          </div>
-        )}
-      </DetailsBanner>
+              ))}
+            </div>
+          )}
+        </DetailsBanner>
       )}
     </div>
   );
