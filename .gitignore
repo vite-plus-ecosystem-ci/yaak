@@ -62,3 +62,4 @@ flatpak/node-sources.json
 
 # Headless screenshots taken while working
 .shots/
+.vitest/

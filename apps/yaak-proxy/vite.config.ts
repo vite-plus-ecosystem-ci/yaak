@@ -1,5 +1,5 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 import wasm from "vite-plugin-wasm";
 
 export default defineConfig({
